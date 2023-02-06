@@ -8,9 +8,9 @@ const app = express()
 app.use(express.json()) // req.body
 app.use(cors())
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// routers
+// register and logins route
+app.use('/auth', require('./routes/jwtAuth'))
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
