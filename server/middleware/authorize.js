@@ -4,7 +4,7 @@ require('dotenv').config()
 // This middleware will continue on if the token is inside the local storage
 module.exports = async (req, res, next) => {
   // Get token from header
-  const token = req.header('jwt_token')
+  const token = req.header('Authorization')
 
   // Check if not token
   if (!token) {

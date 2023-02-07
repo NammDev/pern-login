@@ -31,13 +31,13 @@ const Login = ({ setAuth }) => {
       if (data.accessToken) {
         localStorage.setItem('token', data.accessToken)
         setAuth(true)
-        toast.success('Register Successfully')
+        toast.success('Login Successfully')
       } else {
         setAuth(false)
         toast.error(data)
       }
     } catch (err) {
-      console.error(err.message)
+      toast.error(err.response.data)
     }
   }
 
@@ -59,7 +59,7 @@ const Login = ({ setAuth }) => {
           onChange={(e) => onChange(e)}
           className='form-control my-3'
         />
-        <button class='btn btn-success btn-block'>Submit</button>
+        <button className='btn btn-success btn-block'>Submit</button>
       </form>
       <Link to='/register'>register</Link>
     </Fragment>
