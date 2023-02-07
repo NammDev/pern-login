@@ -1,15 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from '../config/axiosConfig'
 import { toast } from 'react-toastify'
 
 const Register = ({ setAuth }) => {
+  const [success, setSuccess] = useState(false)
+  const [errMsg, setErrMsg] = useState('')
+
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
     name: '',
   })
   const { email, password, name } = inputs
+
+  useEffect(() => {
+    setErrMsg('')
+  }, [inputs])
 
   const onChange = (e) => setInputs({ ...inputs, [e.target.name]: e.target.value })
 
@@ -27,51 +34,60 @@ const Register = ({ setAuth }) => {
       if (data.accessToken) {
         localStorage.setItem('token', data.accessToken)
         setAuth(true)
+        setSuccess(true)
         toast.success('Register Successfully')
       } else {
         setAuth(false)
-        toast.error(data)
+        setErrMsg(data)
       }
     } catch (err) {
       if (err?.response) {
-        toast.error(err.response.data)
+        setErrMsg(err.response.data)
       } else {
-        toast.error('Registration Failed')
+        setErrMsg('Registration Failed')
       }
     }
   }
   return (
-    <>
-      <h1 className='mt-5 text-center'>Register</h1>
+    <section>
+      <p className={errMsg ? 'errmsg' : 'offscreen'}>{errMsg}</p>
+      <h1>Register</h1>
       <form onSubmit={onSubmitForm}>
+        <label htmlFor='email'>Email:</label>
         <input
           type='text'
+          id='email'
           name='email'
           value={email}
           placeholder='email'
           onChange={(e) => onChange(e)}
           className='form-control my-3'
         />
-        <input
-          type='password'
-          name='password'
-          value={password}
-          placeholder='password'
-          onChange={(e) => onChange(e)}
-          className='form-control my-3'
-        />
+        <label htmlFor='username'>Username:</label>
         <input
           type='text'
+          id='username'
           name='name'
           value={name}
           placeholder='name'
           onChange={(e) => onChange(e)}
           className='form-control my-3'
         />
+        <label htmlFor='password'>Password:</label>
+        <input
+          type='password'
+          id='password'
+          name='password'
+          value={password}
+          placeholder='password'
+          onChange={(e) => onChange(e)}
+          className='form-control my-3'
+        />
+
         <button className='btn btn-success btn-block'>Submit</button>
       </form>
       <Link to='/login'>login</Link>
-    </>
+    </section>
   )
 }
 
