@@ -23,9 +23,7 @@ const Register = ({ setAuth }) => {
           headers: { 'Content-Type': 'application/json' },
         }
       )
-
       const data = response?.data
-
       if (data.accessToken) {
         localStorage.setItem('token', data.accessToken)
         setAuth(true)
@@ -35,10 +33,10 @@ const Register = ({ setAuth }) => {
         toast.error(data)
       }
     } catch (err) {
-      if (!err?.response) {
-        console.log('No Server Response')
+      if (err?.response) {
+        toast.error(err.response.data)
       } else {
-        console.log('Registration Failed')
+        toast.error('Registration Failed')
       }
     }
   }
