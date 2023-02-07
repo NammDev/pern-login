@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
 import PublicRoute from './routes/PublicRoute'
 import PrivateRoute from './routes/PrivateRoute'
@@ -6,7 +7,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
 
   return (
     <Router>
@@ -15,24 +16,24 @@ function App() {
           <Route
             path='/login'
             element={
-              <PublicRoute isAuthenticated={isAuthenticated}>
-                <Login />
+              <PublicRoute isAuth={isAuth}>
+                <Login setAuth={setIsAuth} />
               </PublicRoute>
             }
           />
           <Route
             path='/register'
             element={
-              <PublicRoute isAuthenticated={isAuthenticated}>
-                <Register />
+              <PublicRoute isAuth={isAuth}>
+                <Register setAuth={setIsAuth} />
               </PublicRoute>
             }
           />
           <Route
             path='/dashboard'
             element={
-              <PrivateRoute isAuthenticated={isAuthenticated}>
-                <Dashboard />
+              <PrivateRoute isAuth={isAuth}>
+                <Dashboard setAuth={setIsAuth} />
               </PrivateRoute>
             }
           />
