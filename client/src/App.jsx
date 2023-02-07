@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify'
@@ -8,9 +8,27 @@ import PublicRoute from './routes/PublicRoute'
 import PrivateRoute from './routes/PrivateRoute'
 import Login from './components/Login'
 import Register from './components/Register'
+import axios from './config/axiosConfig'
 
 function App() {
   const [isAuth, setIsAuth] = useState(false)
+
+  const checkAuthenticated = async () => {
+    try {
+      const response = await axios.get('/auth/verify', {
+        headers: { Authorization: localStorage.token },
+      })
+      const data = response?.data
+      console.log(data)
+      data === true ? setIsAuth(true) : setIsAuth(false)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    checkAuthenticated()
+  }, [])
 
   return (
     <Router>
